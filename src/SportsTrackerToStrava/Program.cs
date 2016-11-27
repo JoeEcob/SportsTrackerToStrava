@@ -51,13 +51,13 @@ namespace SportsTrackerToStrava
 
         private static async Task UploadLatestWorkouts()
         {
-            throw new NotImplementedException("Need to add time frame limit");
+            WriteLine("Getting latest workout...");
 
-            dynamic workouts = await GetLatestWorkouts();
+            dynamic workouts = await GetLatestWorkouts(1);
 
             foreach (var workout in workouts.payload)
             {
-                HttpResponseMessage gpx = await GetGpxData(workout.workoutKey);
+                HttpResponseMessage gpx = await GetGpxData(workout.workoutKey.ToString());
 
                 bool success = await UploadGpx(gpx.Content);
 
