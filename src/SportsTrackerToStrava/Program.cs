@@ -58,8 +58,18 @@ namespace SportsTrackerToStrava
             foreach (var workout in workouts.payload)
             {
                 HttpResponseMessage gpx = await GetGpxData(workout.workoutKey.ToString());
+                bool success = false;
 
-                bool success = await UploadGpx(gpx.Content);
+                try
+                {
+                    success = await UploadGpx(gpx.Content);
+                }
+                catch (Exception e)
+                {
+                    ForegroundColor = ConsoleColor.Red;
+                    WriteLine(e.Message);
+                    ResetColor();
+                }
 
                 WriteLine($"{(success ? "Successfully uploaded gpx data" : "Failed to upload gpx data")} for workout {workout.workoutKey}");
             }
